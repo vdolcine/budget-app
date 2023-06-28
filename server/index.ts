@@ -6,6 +6,8 @@ import apiRouter from './routes/api.js';
 const PORT = process.env.PORT || 8080;
 const app = express();
 
+app.use(express.json());
+
 app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
