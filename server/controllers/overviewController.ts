@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
-import db from '../database/expensesSQLmodels.js';
+import { Request, Response, NextFunction, RequestHandler } from "express";
+import db from "../database/expensesSQLmodels.js";
 
 interface overviewControllerType {
-  getBudget: RequestHandler,
+  getBudget: RequestHandler;
 }
 
 const overviewController: overviewControllerType = {
@@ -10,12 +10,14 @@ const overviewController: overviewControllerType = {
     const queryText = `SELECT * FROM overview_june_2023`;
     db.sqlquery(queryText, undefined, (err: any, result: any) => {
       if (!result) {
-        res.send(`ERROR: Could not retrieve data from overviewController.getBudet`)
+        next({
+          log: `ERROR: Could not retrieve data from overviewController.getBudet`,
+        });
       }
       res.locals.overview = result.rows;
       next();
-    })
-  }
+    });
+  },
 };
 
 export default overviewController;
