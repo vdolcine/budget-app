@@ -97,7 +97,6 @@ const overviewController: overviewControllerType = {
           log: `ERROR: Could not delete category data from overviewController.deleteCategory`
         })
       }
-      console.log(result.rows[0]);
       res.locals.category_name = result.rows[0].category_name;
       next()
     })

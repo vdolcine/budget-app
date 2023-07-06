@@ -1,26 +1,50 @@
 {
   "compilerOptions": {
-      "module": "es6",
-      "esModuleInterop": true,
-      "target": "es6",
-      "noImplicitAny": true,
-      "moduleResolution": "node",
-      "sourceMap": false,
-      // "strict": true,
-      "outDir": "dist",
-      "baseUrl": ".",
-      "lib": ["esnext"],
-      "paths": {
-          "*": [
-              "node_modules/*"
-          ]
-      }
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
-  "ts-node": {
-    "esm": true,
-  },
-  "include": [
-      "src/**/*",
-      "server"
-  ]
+  "include": ["src"],
 }
+
+
+
+// {
+//   "compilerOptions": {
+//       "jsx": "react",
+//       "module": "es6",
+//       "esModuleInterop": true,
+//       "target": "es6",
+//       "noImplicitAny": true,
+//       "moduleResolution": "node",
+//       "sourceMap": false,
+//       // "strict": true,
+//       "outDir": "dist",
+//       "baseUrl": ".",
+//       "lib": ["esnext", "DOM"],
+//       "paths": {
+//           "*": [
+//               "node_modules/*"
+//           ]
+//       }
+//   },
+//   "ts-node": {
+//     "esm": true,
+//   },
+//   "include": [
+//       "src/**/*",
+//       "server"
+//   ]
+// }
