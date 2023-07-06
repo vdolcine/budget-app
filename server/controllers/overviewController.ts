@@ -80,7 +80,27 @@ const overviewController: overviewControllerType = {
     });
   },
   deleteCategory: (req: Request, res: Response, next: NextFunction) => {
-    
+    const { id } = req.body;
+    const queryParams = [ id ];
+    const queryText = `DELETE FROM overview_june_2023 WHERE category_id = ($1)`;
+    db.sqlquery(queryText, queryParams, (err: any, result: any) => {
+      if (!result) {
+        next({
+          log: `ERROR: Could not delete overview data from overviewController.deleteCategory`
+        })
+      }
+    })
+    const queryTextCategory = `DELETE FROM categories WHERE category_id = ($1) RETURNING *`;
+    db.sqlquery(queryTextCategory, queryParams, (err: any, result: any) => {
+      if (!result) {
+        next({
+          log: `ERROR: Could not delete category data from overviewController.deleteCategory`
+        })
+      }
+      console.log(result.rows[0]);
+      res.locals.category_name = result.rows[0].category_name;
+      next()
+    })
   }
 };
 
