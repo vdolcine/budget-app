@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
-import db from "../database/expensesSQLmodels.js";
+import { Request, Response, NextFunction, RequestHandler } from 'express';
+import db from '../database/expensesSQLmodels.js';
 
 interface overviewControllerType {
-  getBudget: RequestHandler,
-  getActual: RequestHandler,
-  postCategory: RequestHandler,
-  postBudget: RequestHandler,
-  updateCategory: RequestHandler,
-  deleteCategory: RequestHandler
+  getBudget: RequestHandler;
+  getActual: RequestHandler;
+  postCategory: RequestHandler;
+  postBudget: RequestHandler;
+  updateCategory: RequestHandler;
+  deleteCategory: RequestHandler;
 }
 
 const overviewController: overviewControllerType = {
@@ -16,7 +16,7 @@ const overviewController: overviewControllerType = {
     db.sqlquery(queryText, undefined, (err: any, result: any) => {
       if (!result) {
         next({
-          log: `ERROR: Could not retrieve data from overviewController.getBudet`,
+          log: `ERROR: Could not retrieve data from overviewController.getBudet`
         });
       }
       res.locals.overview = result.rows;
@@ -28,7 +28,7 @@ const overviewController: overviewControllerType = {
     db.sqlquery(queryText, undefined, (err: any, result: any) => {
       if (!result) {
         next({
-          log: `ERROR: Could not retrieve data from overviewController.getActual`,
+          log: `ERROR: Could not retrieve data from overviewController.getActual`
         });
       }
       res.locals.actual = result.rows;
@@ -37,7 +37,7 @@ const overviewController: overviewControllerType = {
   },
   postCategory: (req: Request, res: Response, next: NextFunction) => {
     const { new_category } = req.body;
-    const queryParamsCategory = [ new_category, "false" ];
+    const queryParamsCategory = [new_category, 'false'];
     const queryTextCategory = `INSERT INTO categories (category_name, base_expense) VALUES ($1, $2) RETURNING *`;
     db.sqlquery(
       queryTextCategory,
@@ -45,7 +45,7 @@ const overviewController: overviewControllerType = {
       (err: any, result: any) => {
         if (!result) {
           next({
-            log: `ERROR: Could not post category from overviewController.postCategory`,
+            log: `ERROR: Could not post category from overviewController.postCategory`
           });
         }
         res.locals.category_id = result.rows[0].category_id;
@@ -55,12 +55,12 @@ const overviewController: overviewControllerType = {
   },
   postBudget: (req: Request, res: Response, next: NextFunction) => {
     const { budget } = req.body;
-    const queryParamsBudget = [ budget, res.locals.category_id ];
+    const queryParamsBudget = [budget, res.locals.category_id];
     const queryTextBudget = `INSERT INTO overview_june_2023 (total_category, category_id) VALUES ($1, $2) RETURNING *`;
     db.sqlquery(queryTextBudget, queryParamsBudget, (err: any, result: any) => {
       if (!result) {
         next({
-          log: `ERROR: Could not post budget from overviewController.postCategory `,
+          log: `ERROR: Could not post budget from overviewController.postCategory `
         });
       }
       next();
@@ -68,12 +68,12 @@ const overviewController: overviewControllerType = {
   },
   updateCategory: (req: Request, res: Response, next: NextFunction) => {
     const { id, total } = req.body;
-    const queryParams = [ total, id ]
+    const queryParams = [total, id];
     const queryText = `UPDATE overview_june_2023 SET total_category = ($1) WHERE category_id = ($2) RETURNING *`;
     db.sqlquery(queryText, queryParams, (err: any, result: any) => {
       if (!result) {
         next({
-          log: `ERROR: Could not update data from overviewController.updateCategory`,
+          log: `ERROR: Could not update data from overviewController.updateCategory`
         });
       }
       next();
@@ -81,25 +81,25 @@ const overviewController: overviewControllerType = {
   },
   deleteCategory: (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.body;
-    const queryParams = [ id ];
+    const queryParams = [id];
     const queryText = `DELETE FROM overview_june_2023 WHERE category_id = ($1)`;
     db.sqlquery(queryText, queryParams, (err: any, result: any) => {
       if (!result) {
         next({
           log: `ERROR: Could not delete overview data from overviewController.deleteCategory`
-        })
+        });
       }
-    })
+    });
     const queryTextCategory = `DELETE FROM categories WHERE category_id = ($1) RETURNING *`;
     db.sqlquery(queryTextCategory, queryParams, (err: any, result: any) => {
       if (!result) {
         next({
           log: `ERROR: Could not delete category data from overviewController.deleteCategory`
-        })
+        });
       }
       res.locals.category_name = result.rows[0].category_name;
-      next()
-    })
+      next();
+    });
   }
 };
 
